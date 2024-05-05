@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,18 +33,18 @@ public class DemoController {
     }
 
     @GetMapping("demo")
-    public List<DemoDTO> getAllDemoUser(){
-        return demoService.getAllDemoUsers();
+    public ResponseEntity<List<DemoDTO>> getAllDemoUser(){
+        return new ResponseEntity<List<DemoDTO>>(demoService.getAllDemoUsers(),HttpStatus.OK);
     }
 
     @PutMapping("demo/{id}")
-    public DemoDTO updateDemoUser(@RequestBody DemoDTO demoDTO, @PathVariable Integer id){
-        return demoService.updateDemoUser(demoDTO, id);
+    public ResponseEntity<DemoDTO> updateDemoUser(@RequestBody DemoDTO demoDTO, @PathVariable Integer id){
+        return new ResponseEntity<>(demoService.updateDemoUser(demoDTO, id), HttpStatus.OK);
     }
 
     @GetMapping("demo/{id}")
-    public DemoDTO getDemoUserById(@PathVariable Integer id){
-        return demoService.getDemoUserById(id);
+    public ResponseEntity<DemoDTO> getDemoUserById(@PathVariable Integer id){
+        return new ResponseEntity<>(demoService.getDemoUserById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("demo/{id}")
