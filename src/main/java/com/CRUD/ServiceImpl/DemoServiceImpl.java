@@ -25,14 +25,36 @@ public class DemoServiceImpl implements DemoService {
     public DemoDTO addDemoUser(DemoDTO demoDTO) {
         Demo demo = modelMapper.map(demoDTO, Demo.class);
         demoRepo.save(demo);
-        return demoDTO;
+        return modelMapper.map(demo, DemoDTO.class);
     }
 
     @Override
     public List<DemoDTO> getAllDemoUsers() {
         List<Demo> demo = demoRepo.findAll();
-        List<DemoDTO> demoDTOs = demo.stream().map(a -> modelMapper.map(demo, DemoDTO.class)).collect(Collectors.toList());
+        List<DemoDTO> demoDTOs = demo.stream().map(a -> modelMapper.map(a, DemoDTO.class)).collect(Collectors.toList());
         return demoDTOs;
+    }
+
+    @Override
+    public DemoDTO updateDemoUser(DemoDTO demoDTO, Integer id) {
+        Demo demo = demoRepo.findById(id).get();
+        demo.setName(demoDTO.getName());
+        demo.setGender(demoDTO.getGender());
+        demoRepo.save(demo);
+        return modelMapper.map(demo, DemoDTO.class);
+    }
+
+    @Override
+    public DemoDTO getDemoUserById(Integer id) {
+        Demo demo = demoRepo.findById(id).get();
+        return modelMapper.map(demo, DemoDTO.class);
+    }
+
+    @Override
+    public String deleteDemoUser(Integer id) {
+        Demo demo = demoRepo.findById(id).get();
+        demoRepo.delete(demo);
+        return "Demo user deleted wit id: "+demo.getId();
     }
     
 }

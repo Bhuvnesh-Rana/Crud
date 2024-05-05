@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DemoDTO {
-    
+
+    private Integer id;
     private String name;
     private char Gender;
 }

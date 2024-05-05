@@ -3,8 +3,11 @@ package com.CRUD.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,14 +25,29 @@ public class DemoController {
         return"this is a demo project";
     }
 
-    @PostMapping("add")
+    @PostMapping("demo")
     public DemoDTO addDemoUser(@RequestBody DemoDTO demoDTO){
         return demoService.addDemoUser(demoDTO);
     }
 
-    @GetMapping("all")
+    @GetMapping("demo")
     public List<DemoDTO> getAllDemoUser(){
         return demoService.getAllDemoUsers();
+    }
+
+    @PutMapping("demo/{id}")
+    public DemoDTO updateDemoUser(@RequestBody DemoDTO demoDTO, @PathVariable Integer id){
+        return demoService.updateDemoUser(demoDTO, id);
+    }
+
+    @GetMapping("demo/{id}")
+    public DemoDTO getDemoUserById(@PathVariable Integer id){
+        return demoService.getDemoUserById(id);
+    }
+
+    @DeleteMapping("demo/{id}")
+    public String deleteDemoUser(@PathVariable Integer id){
+        return demoService.deleteDemoUser(id);
     }
     
 }
