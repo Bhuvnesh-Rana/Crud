@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.CRUD.ApiResponse.ApiResponse;
+import com.CRUD.ApiResponse.ApiResponseMessage;
 import com.CRUD.DTO.DemoDTO;
 import com.CRUD.Service.DemoService;
 
@@ -28,8 +30,8 @@ public class DemoController {
     }
 
     @PostMapping("demo")
-    public ResponseEntity<DemoDTO> addDemoUser(@RequestBody DemoDTO demoDTO){
-        return new ResponseEntity<DemoDTO>(demoService.addDemoUser(demoDTO), HttpStatus.CREATED);
+    public ResponseEntity<ApiResponseMessage> addDemoUser(@RequestBody DemoDTO demoDTO){
+        return new ResponseEntity<>(new ApiResponseMessage(true, demoService.addDemoUser(demoDTO)), HttpStatus.CREATED);
     }
 
     @GetMapping("demo")
@@ -38,18 +40,31 @@ public class DemoController {
     }
 
     @PutMapping("demo/{id}")
-    public ResponseEntity<DemoDTO> updateDemoUser(@RequestBody DemoDTO demoDTO, @PathVariable Integer id){
-        return new ResponseEntity<>(demoService.updateDemoUser(demoDTO, id), HttpStatus.OK);
+    public ResponseEntity<ApiResponseMessage> updateDemoUser(@RequestBody DemoDTO demoDTO, @PathVariable Integer id){
+        if (demoService.serviceFindById(id)) 
+            return new ResponseEntity<>(new ApiResponseMessage(true, demoService.updateDemoUser(demoDTO, id)), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(new ApiResponseMessage(false, "No demo user found with id "+id+" to update."), HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("demo/{id}")
-    public ResponseEntity<DemoDTO> getDemoUserById(@PathVariable Integer id){
-        return new ResponseEntity<>(demoService.getDemoUserById(id), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getDemoUserById(@PathVariable Integer id){
+        if (demoService.serviceFindById(id)) {
+            return new ResponseEntity<>(new ApiResponse(true,"Demo user found",demoService.getDemoUserById(id)), HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(new ApiResponse(false, "No demo user found with id "+id),HttpStatus.NOT_FOUND);
+        
     }
 
     @DeleteMapping("demo/{id}")
-    public String deleteDemoUser(@PathVariable Integer id){
-        return demoService.deleteDemoUser(id);
+    public ResponseEntity<ApiResponseMessage> deleteDemoUser(@PathVariable Integer id){
+        if (demoService.serviceFindById(id)) 
+            return new ResponseEntity<>(new ApiResponseMessage(true, demoService.deleteDemoUser(id)), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(new ApiResponseMessage(false, "No demo user found with id "+id+" to delete."), HttpStatus.NOT_FOUND);
+
+        
     }
     
 }

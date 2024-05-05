@@ -22,10 +22,11 @@ public class DemoServiceImpl implements DemoService {
     ModelMapper modelMapper;
 
     @Override
-    public DemoDTO addDemoUser(DemoDTO demoDTO) {
+    public String addDemoUser(DemoDTO demoDTO) {
         Demo demo = modelMapper.map(demoDTO, Demo.class);
         demoRepo.save(demo);
-        return modelMapper.map(demo, DemoDTO.class);
+        modelMapper.map(demo, DemoDTO.class);
+        return "Demo user "+demo.getName()+" added.";
     }
 
     @Override
@@ -36,12 +37,13 @@ public class DemoServiceImpl implements DemoService {
     }
 
     @Override
-    public DemoDTO updateDemoUser(DemoDTO demoDTO, Integer id) {
+    public String updateDemoUser(DemoDTO demoDTO, Integer id) {
         Demo demo = demoRepo.findById(id).get();
         demo.setName(demoDTO.getName());
         demo.setGender(demoDTO.getGender());
         demoRepo.save(demo);
-        return modelMapper.map(demo, DemoDTO.class);
+        modelMapper.map(demo, DemoDTO.class);
+        return "Demo user details updated.";
     }
 
     @Override
@@ -54,7 +56,15 @@ public class DemoServiceImpl implements DemoService {
     public String deleteDemoUser(Integer id) {
         Demo demo = demoRepo.findById(id).get();
         demoRepo.delete(demo);
-        return "Demo user deleted wit id: "+demo.getId();
+        return "Demo user deleted with id: "+demo.getId();
+    }
+
+    @Override
+    public boolean serviceFindById(Integer id) {
+        if (demoRepo.existsById(id)) 
+            return true;
+        else
+            return false;
     }
     
 }
