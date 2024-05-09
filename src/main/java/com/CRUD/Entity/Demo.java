@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Demo {
 
+    public Demo(int id2, String name2, String string) {
+        //TODO Auto-generated constructor stub
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

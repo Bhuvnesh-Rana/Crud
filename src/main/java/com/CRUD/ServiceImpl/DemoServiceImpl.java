@@ -21,6 +21,10 @@ public class DemoServiceImpl implements DemoService {
     @Autowired
     ModelMapper modelMapper;
 
+    public DemoServiceImpl(DemoRepo demoRepo) {
+        //TODO Auto-generated constructor stub
+    }
+
     @Override
     public String addDemoUser(DemoDTO demoDTO) {
         Demo demo = modelMapper.map(demoDTO, Demo.class);
