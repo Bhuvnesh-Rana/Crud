@@ -10,17 +10,21 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Demo {
 
-    public Demo(int id2, String name2, String string) {
-        //TODO Auto-generated constructor stub
-    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private char gender;
+
+    public Demo(Integer id, String name, char gender) {
+        super();
+        this.id=id;
+        this.name=name;
+        this.gender=gender;
+    }
     
 }

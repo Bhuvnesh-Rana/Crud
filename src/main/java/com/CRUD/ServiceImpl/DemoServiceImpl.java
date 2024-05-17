@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,16 @@ public class DemoServiceImpl implements DemoService {
     ModelMapper modelMapper;
 
     public DemoServiceImpl(DemoRepo demoRepo) {
-        //TODO Auto-generated constructor stub
+        this.demoRepo=demoRepo;
     }
 
     @Override
     public String addDemoUser(DemoDTO demoDTO) {
-        Demo demo = modelMapper.map(demoDTO, Demo.class);
+        // Demo demo = modelMapper.map(demoDTO, Demo.class);
+        Demo demo = new Demo();
+        BeanUtils.copyProperties(demoDTO, demo);
         demoRepo.save(demo);
-        modelMapper.map(demo, DemoDTO.class);
+        // modelMapper.map(demo, DemoDTO.class);
         return "Demo user "+demo.getName()+" added.";
     }
 

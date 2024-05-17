@@ -11,13 +11,16 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.CRUD.DTO.DemoDTO;
 import com.CRUD.Entity.Demo;
 import com.CRUD.Repository.DemoRepo;
 import com.CRUD.Service.DemoService;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+// import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 
 public class DemoServiceImplTest {
@@ -27,14 +30,14 @@ public class DemoServiceImplTest {
     private DemoService demoService;
     AutoCloseable autoCloseable;
     Demo demo;
-    @Autowired
-    ModelMapper modelMapper;
+    // @Autowired
+    // ModelMapper modelMapper;
 
     @BeforeEach
     void setUp(){
         autoCloseable = MockitoAnnotations.openMocks(this);
         demoService = new DemoServiceImpl(demoRepo);
-        demo = new Demo(1, "Random", "M");
+        demo = new Demo(1,"Random",'M');
     }
 
     @AfterEach
@@ -44,13 +47,22 @@ public class DemoServiceImplTest {
 
     @Test
     void testAddDemoUser() {
-        mock(Demo.class);
+        mock(DemoDTO.class);
         mock(DemoRepo.class);
 
         when(demoRepo.save(demo)).thenReturn(demo);
-        DemoDTO d = modelMapper.map(demo, DemoDTO.class);
+        // DemoDTO d = modelMapper.map(demo, DemoDTO.class);
+        DemoDTO d = demoToDemoDTO(demo);
         assertThat(demoService.addDemoUser(d)).isEqualTo("Demo user "+demo.getName()+" added.");
         
+    }
+    private DemoDTO demoToDemoDTO(Demo demo) {
+		DemoDTO demoDto = new DemoDTO();
+		demoDto.setId(demo.getId());
+		demoDto.setName(demo.getName());
+		demoDto.setGender(demo.getGender());
+		
+		return demoDto;
     }
 
     @Test
