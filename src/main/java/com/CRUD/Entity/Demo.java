@@ -19,7 +19,7 @@ public class Demo {
     private String name;
     private char gender;
 
-    public Demo(Integer id, String name, char gender) {
+    public Demo(Integer id, String name, char gender) {     //used in testing.
         super();
         this.id=id;
         this.name=name;

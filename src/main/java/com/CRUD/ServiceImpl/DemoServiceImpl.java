@@ -22,13 +22,13 @@ public class DemoServiceImpl implements DemoService {
     @Autowired
     ModelMapper modelMapper;
 
-    public DemoServiceImpl(DemoRepo demoRepo) {
+    public DemoServiceImpl(DemoRepo demoRepo) {         //used in testing
         this.demoRepo=demoRepo;
     }
 
     @Override
     public String addDemoUser(DemoDTO demoDTO) {
-        // Demo demo = modelMapper.map(demoDTO, Demo.class);
+        // Demo demo = modelMapper.map(demoDTO, Demo.class);        //model mapper not working fofr test.
         Demo demo = new Demo();
         BeanUtils.copyProperties(demoDTO, demo);
         demoRepo.save(demo);
@@ -39,7 +39,8 @@ public class DemoServiceImpl implements DemoService {
     @Override
     public List<DemoDTO> getAllDemoUsers() {
         List<Demo> demo = demoRepo.findAll();
-        List<DemoDTO> demoDTOs = demo.stream().map(a -> modelMapper.map(a, DemoDTO.class)).collect(Collectors.toList());
+        // List<DemoDTO> demoDTOs = demo.stream().map(a -> modelMapper.map(a, DemoDTO.class)).collect(Collectors.toList());
+        List<DemoDTO> demoDTOs = demo.stream().map(a -> demoToDemoDTO(a)).collect(Collectors.toList());
         return demoDTOs;
     }
 
@@ -56,7 +57,8 @@ public class DemoServiceImpl implements DemoService {
     @Override
     public DemoDTO getDemoUserById(Integer id) {
         Demo demo = demoRepo.findById(id).get();
-        return modelMapper.map(demo, DemoDTO.class);
+        // return modelMapper.map(demo, DemoDTO.class);
+        return demoToDemoDTO(demo);
     }
 
     @Override
@@ -73,6 +75,15 @@ public class DemoServiceImpl implements DemoService {
             return true;
         else
             return false;
+    }
+
+    private DemoDTO demoToDemoDTO(Demo demo) {
+		DemoDTO demoDto = new DemoDTO();
+		demoDto.setId(demo.getId());
+		demoDto.setName(demo.getName());
+		demoDto.setGender(demo.getGender());
+		
+		return demoDto;
     }
     
 }
