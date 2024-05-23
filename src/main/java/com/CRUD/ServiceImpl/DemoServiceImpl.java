@@ -49,7 +49,7 @@ public class DemoServiceImpl implements DemoService {
         demo.setName(demoDTO.getName());
         demo.setGender(demoDTO.getGender());
         demoRepo.save(demo);
-        modelMapper.map(demo, DemoDTO.class);
+        // modelMapper.map(demo, DemoDTO.class);
         return "Demo user details updated.";
     }
 

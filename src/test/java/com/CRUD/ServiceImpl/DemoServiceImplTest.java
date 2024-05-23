@@ -34,7 +34,7 @@ public class DemoServiceImplTest {
     @Mock
     private DemoRepo demoRepo;
     private DemoService demoService;
-    AutoCloseable autoCloseable;
+    AutoCloseable autoCloseable;        //to close all the unwanted resources, when test execution is finished.
     Demo demo;
     @Autowired
     ModelMapper modelMapper;
@@ -105,6 +105,13 @@ public class DemoServiceImplTest {
 
     @Test
     void testUpdateDemoUser() {
+        mock(DemoDTO.class);
+        mock(DemoRepo.class);
 
+        when(demoRepo.findById(1)).thenReturn(Optional.ofNullable(demo));
+        when(demoRepo.save(demo)).thenReturn(demo);
+        // DemoDTO d = modelMapper.map(demo, DemoDTO.class);
+        DemoDTO d = demoToDemoDTO(demo);
+        assertThat(demoService.updateDemoUser(d, 1)).isEqualTo("Demo user details updated.");
     }
 }
