@@ -64,7 +64,7 @@ public class DemoServiceImpl implements DemoService {
         // Demo demo = demoRepo.findById(id).get();
         // demoRepo.delete(demo);
         demoRepo.deleteById(id);
-        return "Demo user deleted with id: "; //demo.getId();
+        return "Demo user deleted with id: "+id; 
     }
 
     @Override

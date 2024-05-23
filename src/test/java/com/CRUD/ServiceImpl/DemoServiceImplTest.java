@@ -65,27 +65,18 @@ public class DemoServiceImplTest {
         assertThat(demoService.addDemoUser(d)).isEqualTo("Demo user "+demo.getName()+" added.");
         
     }
-    private DemoDTO demoToDemoDTO(Demo demo) {
-		DemoDTO demoDto = new DemoDTO();
-		demoDto.setId(demo.getId());
-		demoDto.setName(demo.getName());
-		demoDto.setGender(demo.getGender());
-		
-		return demoDto;
-    }
-
+   
     @Test
-    void testDeleteDemoUser() {
-    mock(Demo.class);
+    void testDeleteDemoUser() {     //does not have a return type -- void mthd.
+    mock(DemoDTO.class);
     mock(DemoRepo.class,Mockito.CALLS_REAL_METHODS);
 
-    //     Demo abc = demoRepo.findById(demo.getId());
+    //     Demo abc = demoRepo.findById(demo.getId());      //WRONG use data created in test directly.
     // doAnswer(Answers.CALLS_REAL_METHODS).when(demoRepo.delete(abc));
     //     assertThat(demoService.deleteDemoUser(1)).isEqualTo("Demo user deleted with id: ");
 
-    doAnswer(Answers.CALLS_REAL_METHODS).when(demoRepo)
-                .deleteById(any());
-        assertThat(demoService.deleteDemoUser(1)).isEqualTo("Demo user deleted with id: ");
+    doAnswer(Answers.CALLS_REAL_METHODS).when(demoRepo).deleteById(1); //can also write any() as id.
+        assertThat(demoService.deleteDemoUser(1)).isEqualTo("Demo user deleted with id: "+demo.getId());
     }
 
     @Test
@@ -114,4 +105,14 @@ public class DemoServiceImplTest {
         DemoDTO d = demoToDemoDTO(demo);
         assertThat(demoService.updateDemoUser(d, 1)).isEqualTo("Demo user details updated.");
     }
+
+    private DemoDTO demoToDemoDTO(Demo demo) {
+		DemoDTO demoDto = new DemoDTO();
+		demoDto.setId(demo.getId());
+		demoDto.setName(demo.getName());
+		demoDto.setGender(demo.getGender());
+		
+		return demoDto;
+    }
+
 }
