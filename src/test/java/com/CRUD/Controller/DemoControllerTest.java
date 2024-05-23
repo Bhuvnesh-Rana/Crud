@@ -14,10 +14,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.CRUD.DTO.DemoDTO;
 import com.CRUD.Service.DemoService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @WebMvcTest
 public class DemoControllerTest {
@@ -45,18 +50,32 @@ public class DemoControllerTest {
 
 
     @Test
-    void testAddDemoUser() {
+    void testAddDemoUser() throws Exception {
+        // Converting demoDTO1 to json format, @RequestBody requires json input in controller.
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson=ow.writeValueAsString(demoDTO1);
+
+        when(demoService.addDemoUser(demoDTO1)).thenReturn("Demo user "+demoDTO1.getName()+" added.");
+        this.mockMvc.perform(post("/demo").contentType(MediaType.APPLICATION_JSON)
+                                                      .content(requestJson))    //accepting JSON.
+                                                      .andDo(print())
+                                                      .andExpect(status().isCreated());
 
     }
 
     @Test
-    void testDeleteDemoUser() {
-
+    void testDeleteDemoUser() throws Exception {
+        if (when(demoService.serviceFindById(1)).thenReturn(true) != null) {
+            when(demoService.deleteDemoUser(1)).thenReturn("Demo user deleted with id: "+demoDTO1.getId());
+            this.mockMvc.perform(delete("/demo/1")).andDo(print()).andExpect(status().isOk());
+        }
     }
 
     @Test
     void testGetAllDemoUser() throws Exception {
-        // DemoDTO d = demoToDemoDTO(demo1); //no need using DTO Constructor.
+        // DemoDTO d = demoToDemoDTO(demo1);        //no need, using DTO Constructor.
         when(demoService.getAllDemoUsers()).thenReturn(demoDTOs);
         this.mockMvc.perform(get("/demo")).andDo(print()).andExpect(status().isOk());     //import get etc manually
         }
@@ -64,7 +83,6 @@ public class DemoControllerTest {
 
     @Test
     void testGetDemoUserById() throws Exception {
-        // DemoDTO d = demoToDemoDTO(demo1);
         if (when(demoService.serviceFindById(1)).thenReturn(true) != null) {
         when(demoService.getDemoUserById(1)).thenReturn(demoDTO1);
         this.mockMvc.perform(get("/demo/1")).andDo(print()).andExpect(status().isOk());     //import get etc manually
