@@ -1,5 +1,6 @@
 # My CRUD ops.
-. All crud operations performed.
-. All reponses in JSON fromat.
-. Bean Validation.
-. JUnit testing.
+1. All crud operations performed.
+2. All reponses in JSON fromat.
+3. Bean Validation.
+4. JUnit testing.
+
