@@ -47,7 +47,7 @@ public class DemoController {
             return new ResponseEntity<>(new ApiResponseMessage(false, "No demo user found with id "+id+" to update."), HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("demo/{id}")
+    @GetMapping("/demo/{id}")
     public ResponseEntity<ApiResponse> getDemoUserById(@PathVariable Integer id){
         if (demoService.serviceFindById(id)) {
             return new ResponseEntity<>(new ApiResponse(true,"Demo user found",demoService.getDemoUserById(id)), HttpStatus.OK);

@@ -19,9 +19,9 @@ public class Demo {
     private String name;
     private char gender;
 
-    public Demo(Integer id, String name, char gender) {     //used in testing.
-        super();
-        this.id=id;
+    public Demo(Integer id, String name, char gender) {     //used in testing. can use entity or Dto.
+        super();                                            //use Dto as mthd parameter accept Dto.
+        this.id=id;                                         //while using entity, converted to dto in test.
         this.name=name;
         this.gender=gender;
     }
