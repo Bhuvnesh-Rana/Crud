@@ -18,6 +18,8 @@ import com.CRUD.ApiResponse.ApiResponseMessage;
 import com.CRUD.DTO.DemoDTO;
 import com.CRUD.Service.DemoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class DemoController {
 
@@ -30,7 +32,7 @@ public class DemoController {
     }
 
     @PostMapping("demo")
-    public ResponseEntity<ApiResponseMessage> addDemoUser(@RequestBody DemoDTO demoDTO){
+    public ResponseEntity<ApiResponseMessage> addDemoUser(@Valid @RequestBody DemoDTO demoDTO){
         return new ResponseEntity<>(new ApiResponseMessage(true, demoService.addDemoUser(demoDTO)), HttpStatus.CREATED);
     }
 
@@ -40,7 +42,7 @@ public class DemoController {
     }
 
     @PutMapping("demo/{id}")
-    public ResponseEntity<ApiResponseMessage> updateDemoUser(@RequestBody DemoDTO demoDTO, @PathVariable Integer id){
+    public ResponseEntity<ApiResponseMessage> updateDemoUser(@Valid @RequestBody DemoDTO demoDTO, @PathVariable Integer id){
         if (demoService.serviceFindById(id)) 
             return new ResponseEntity<>(new ApiResponseMessage(true, demoService.updateDemoUser(demoDTO, id)), HttpStatus.OK);
         else
